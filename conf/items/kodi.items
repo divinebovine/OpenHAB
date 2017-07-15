@@ -1,0 +1,2 @@
+Player KodiMb_Control { channel="kodi:kodi:MasterBedroom:control" }
+Switch KodiMb_Stop { channel="kodi:kodi:MasterBedroom:stop" }

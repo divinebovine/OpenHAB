@@ -1,0 +1,3 @@
+Number Temperature "Temperature" { channel="yahooweather:weather:farmersville:temperature" }
+Number Humidity "Humidity" { channel="yahooweather:weather:farmersville:humidity" }
+Number Pressure "Pressure" { channel="yahooweather:weather:farmersville:pressure" }

@@ -1,0 +1,5 @@
+Dimmer LifxChrisLight_Brightness { channel="lifx:colorlight:ChrisLight:color" }
+Color LifxChrisLight_Color { channel="lifx:colorlight:ChrisLight:color" }
+
+Dimmer LifxDanielLight_Brightness { channel="lifx:colorlight:DanielLight:color" }
+Color LifxDanielLight_Color { channel="lifx:colorlight:DanielLight:color" }

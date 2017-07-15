@@ -1,0 +1,147 @@
+import org.openhab.core.library.types.*
+
+var PercentType civilDuskLevel = new PercentType(10)
+var PercentType nauticalDuskLevel = new PercentType(20)
+var PercentType astroDuskLevel = new PercentType (30)
+var PercentType pauseLevel = new PercentType(30)
+var PercentType playLevel = new PercentType(5)
+var PercentType stopLevel = new PercentType(15)
+
+rule "Civl Dusk Triggered"
+when 
+    Channel 'astro:sun:civilDusk#event' triggered START
+then
+    logInfo("MasterBedroom", "Sunset rule triggered!")
+
+    var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
+    if (kodiStatus == "ONLINE") {
+        if (KodiMb_Control.state == PLAY) {
+            logInfo("MasterBedroom", "Setting lights to {}%", playLevel)
+            sendCommand(LifxChrisLight_Brightness, playLevel)
+            sendCommand(LifxDanielLight_Brightness, playLevel)
+        } else if (KodiMb_Control.state == PAUSE) {
+            logInfo("MasterBedroom", "Setting lights to {}%", pauseLevel)
+            sendCommand(LifxChrisLight_Brightness, pauseLevel)
+            sendCommand(LifxDanielLight_Brightness, pauseLevel)
+        } else if (KodiMb_Stop.state == ON) {
+            logInfo("MasterBedroom", "Setting lights to {}%", stopLevel)
+            sendCommand(LifxChrisLight_Brightness, stopLevel)
+            sendCommand(LifxDanielLight_Brightness, stopLevel)
+        }
+    } else {
+        logInfo("MasterBedroom", "Setting lights to {}%", civilDuskLevel)
+        sendCommand(LifxChrisLight_Brightness, civilDuskLevel)
+        sendCommand(LifxDanielLight_Brightness, civilDuskLevel)
+    }
+end
+
+rule "Nautical Dusk Triggered"
+when 
+    Channel 'astro:sun:nauticalDusk#event' triggered START
+then
+    logInfo("MasterBedroom", "Sunset rule triggered!")
+
+    var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
+    if (kodiStatus == "ONLINE") {
+        if (KodiMb_Control.state == PLAY) {
+            logInfo("MasterBedroom", "Setting lights to {}%", playLevel)
+            sendCommand(LifxChrisLight_Brightness, playLevel)
+            sendCommand(LifxDanielLight_Brightness, playLevel)
+        } else if (KodiMb_Control.state == PAUSE) {
+            logInfo("MasterBedroom", "Setting lights to {}%", pauseLevel)
+            sendCommand(LifxChrisLight_Brightness, pauseLevel)
+            sendCommand(LifxDanielLight_Brightness, pauseLevel)
+        } else if (KodiMb_Stop.state == ON) {
+            logInfo("MasterBedroom", "Setting lights to {}%", stopLevel)
+            sendCommand(LifxChrisLight_Brightness, stopLevel)
+            sendCommand(LifxDanielLight_Brightness, stopLevel)
+        }
+    } else {
+        logInfo("MasterBedroom", "Setting lights to {}%", nauticalDuskLevel)
+        sendCommand(LifxChrisLight_Brightness, nauticalDuskLevel)
+        sendCommand(LifxDanielLight_Brightness, nauticalDuskLevel)
+    }
+end
+
+rule "Astro Dusk Triggered"
+when 
+    Channel 'astro:sun:astroDusk#event' triggered START
+then
+    logInfo("MasterBedroom", "Sunset rule triggered!")
+
+    var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
+    if (kodiStatus == "ONLINE") {
+        if (KodiMb_Control.state == PLAY) {
+            logInfo("MasterBedroom", "Setting lights to {}%", playLevel)
+            sendCommand(LifxChrisLight_Brightness, playLevel)
+            sendCommand(LifxDanielLight_Brightness, playLevel)
+        } else if (KodiMb_Control.state == PAUSE) {
+            logInfo("MasterBedroom", "Setting lights to {}%", pauseLevel)
+            sendCommand(LifxChrisLight_Brightness, pauseLevel)
+            sendCommand(LifxDanielLight_Brightness, pauseLevel)
+        } else if (KodiMb_Stop.state == ON) {
+            logInfo("MasterBedroom", "Setting lights to {}%", stopLevel)
+            sendCommand(LifxChrisLight_Brightness, stopLevel)
+            sendCommand(LifxDanielLight_Brightness, stopLevel)
+        }
+    } else {
+        logInfo("MasterBedroom", "Setting lights to {}%", astroDuskLevel)
+        sendCommand(LifxChrisLight_Brightness, astroDuskLevel)
+        sendCommand(LifxDanielLight_Brightness, astroDuskLevel)
+    }
+end
+
+rule "Kodi Player Command changed to PLAY"
+when 
+    Item KodiMb_Control changed to PLAY       
+then
+    logInfo("MasterBedroom", "Kodi state changed to play")
+    var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
+    var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
+    if (now.isBefore(sunrise) || now.isAfter(sunset)) {
+        logInfo("MasterBedroom", "Setting light level to {}% because it's dark outside", playLevel)
+ 
+        sendCommand(LifxChrisLight_Brightness, playLevel)
+        sendCommand(LifxDanielLight_Brightness, playLevel)
+    } else {
+        logInfo("MasterBedroom", "Skipping setting light level because it's bright outside")
+    }
+end
+
+rule "Kodi Player Command changed to PAUSE"
+when 
+    Item KodiMb_Control changed to PAUSE       
+then
+    logInfo("MasterBedroom", "Kodi state changed to pause")
+
+    var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
+    var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
+    if (now.isBefore(sunrise) || now.isAfter(sunset)) {
+        logInfo("MasterBedroom", "Setting light level to {}% because it's dark outside", pauseLevel)
+        sendCommand(LifxChrisLight_Brightness, pauseLevel)
+        sendCommand(LifxDanielLight_Brightness, pauseLevel)
+    } else {
+        logInfo("MasterBedroom", "Skipping setting light level because it's bright outside")
+    }
+end
+
+rule "Kodi Player Command changed to STOP"
+when
+    Item KodiMb_Stop changed to ON
+then
+    logInfo("MasterBedroom", "Kodi state changed to stop")
+    
+    var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
+    var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
+    if (now.isBefore(sunrise) || now.isAfter(sunset)) {
+        if (LifxChrisLight_Brightness.state < stopLevel || LifxDanielLight_Brightness.state < stopLevel) {
+            logInfo("MasterBedroom", "Setting light level to {}% because it's dark outside", stopLevel)
+            sendCommand(LifxChrisLight_Brightness, stopLevel)
+            sendCommand(LifxDanielLight_Brightness, stopLevel)
+        } else {
+            logInfo("MasterBedroom", "Skipping setting the light level because it's already brighter than {}%", stopLevel)
+        }
+    } else {
+        logInfo("MasterBedroom", "Skipping setting light level because it's bright outside")
+    }
+end

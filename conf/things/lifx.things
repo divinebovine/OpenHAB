@@ -1,0 +1,9 @@
+Thing lifx:colorlight:DanielLight "Daniel Light" @ "Master Bedroom" [ deviceId="D073D521F902" ] {
+    Channels:
+        Type color : color [ powerOnBrightness=5 ]
+}
+
+Thing lifx:colorlight:ChrisLight "Chris Light" @ "Master Bedroom" [ deviceId="D073D52217A9" ] {
+    Channels:
+        Type color : color [ powerOnBrightness=5 ]
+}

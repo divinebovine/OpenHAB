@@ -1,0 +1,11 @@
+// Dusk
+DateTime civilDuskStart  { channel="astro:sun:local:civilDusk#start" }
+DateTime nauticalDuskStart { channel="astro:sun:local:nauticalDusk#start" }
+DateTime astroDusk { channel="astro:sun:local:astroDusk#start" }
+
+// Sunrise
+DateTime sunriseStart { channel="astro:sun:local:rise#start" }
+DateTime sunriseEnd { channel="astro:sun:local:rise#end" }
+// Sunset
+DateTime sunsetStart { channel="astro:sun:local:set#start" }
+DateTime sunsetEnd { channel="astro:sun:local:set#end" }
