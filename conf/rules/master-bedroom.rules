@@ -11,7 +11,7 @@ rule "Civl Dusk Triggered"
 when 
     Channel 'astro:sun:civilDusk#event' triggered START
 then
-    logInfo("MasterBedroom", "Sunset rule triggered!")
+    logInfo("MasterBedroom", "Civil dusk rule triggered!")
 
     var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
     if (kodiStatus == "ONLINE") {
@@ -39,7 +39,7 @@ rule "Nautical Dusk Triggered"
 when 
     Channel 'astro:sun:nauticalDusk#event' triggered START
 then
-    logInfo("MasterBedroom", "Sunset rule triggered!")
+    logInfo("MasterBedroom", "Nautical dusk rule triggered!")
 
     var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
     if (kodiStatus == "ONLINE") {
@@ -67,7 +67,7 @@ rule "Astro Dusk Triggered"
 when 
     Channel 'astro:sun:astroDusk#event' triggered START
 then
-    logInfo("MasterBedroom", "Sunset rule triggered!")
+    logInfo("MasterBedroom", "Astro dusk rule triggered!")
 
     var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
     if (kodiStatus == "ONLINE") {
