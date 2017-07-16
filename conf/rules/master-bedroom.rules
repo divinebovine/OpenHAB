@@ -9,7 +9,7 @@ var PercentType stopLevel = new PercentType(15)
 
 rule "Civl Dusk Triggered"
 when 
-    Channel 'astro:sun:civilDusk#event' triggered START
+    Channel 'astro:sun:local:civilDusk#event' triggered START
 then
     logInfo("MasterBedroom", "Civil dusk rule triggered!")
 
@@ -37,7 +37,7 @@ end
 
 rule "Nautical Dusk Triggered"
 when 
-    Channel 'astro:sun:nauticalDusk#event' triggered START
+    Channel 'astro:sun:local:nauticalDusk#event' triggered START
 then
     logInfo("MasterBedroom", "Nautical dusk rule triggered!")
 
@@ -65,7 +65,7 @@ end
 
 rule "Astro Dusk Triggered"
 when 
-    Channel 'astro:sun:astroDusk#event' triggered START
+    Channel 'astro:sun:local:astroDusk#event' triggered START
 then
     logInfo("MasterBedroom", "Astro dusk rule triggered!")
 
