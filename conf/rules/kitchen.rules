@@ -4,13 +4,18 @@ var PercentType civilDuskLevel = new PercentType(25)
 var PercentType nauticalDuskLevel = new PercentType(50)
 var PercentType astroDuskLevel = new PercentType (100)
 
+var PercentType lateNightLevel1 = new PercentType (60)
+var PercentType lateNightLevel2 = new PercentType (40)
+var PercentType lateNightLevel3 = new PercentType (20)
+var PercentType lateNightLevel4 = new PercentType (0)
+
 rule "Civl Dusk Triggered"
 when 
     Channel 'astro:sun:local:civilDusk#event' triggered START
 then
     logInfo("Kitchen", "Civil dusk rule triggered!")
-
     logInfo("Kitchen", "Setting lights to {}%", civilDuskLevel)
+    
     sendCommand(LifxKitchen1_Brightness, civilDuskLevel)
     sendCommand(LifxKitchen2_Brightness, civilDuskLevel)
 end
@@ -20,8 +25,8 @@ when
     Channel 'astro:sun:local:nauticalDusk#event' triggered START
 then
     logInfo("Kitchen", "Nautical dusk rule triggered!")
-
     logInfo("Kitchen", "Setting lights to {}%", nauticalDuskLevel)
+    
     sendCommand(LifxKitchen1_Brightness, nauticalDuskLevel)
     sendCommand(LifxKitchen2_Brightness, nauticalDuskLevel)
 end
@@ -32,7 +37,51 @@ when
 then
     logInfo("Kitchen", "Astro dusk rule triggered!")
     logInfo("Kitchen", "Setting lights to {}%", astroDuskLevel)
+    
     sendCommand(LifxKitchen1_Brightness, astroDuskLevel)
     sendCommand(LifxKitchen2_Brightness, astroDuskLevel)
 end
 
+rule "Dim lights late at night part 1"
+when
+    Time cron "0 30 22 1/1 * ? *"
+then
+    logInfo("Kitchen", "Dim lights late at night triggered!")
+    logInfo("Kitchen", "Setting lights to {}%", lateNightLevel1)
+
+    sendCommand(LifxKitchen1_Brightness, lateNightLevel1)
+    sendCommand(LifxKitchen2_Brightness, lateNightLevel1)
+end
+
+rule "Dim lights late at night part 2"
+when
+    Time cron "0 45 22 1/1 * ? *"
+then
+    logInfo("Kitchen", "Dim lights late at night triggered!")
+    logInfo("Kitchen", "Setting lights to {}%", lateNightLevel2)
+
+    sendCommand(LifxKitchen1_Brightness, lateNightLevel2)
+    sendCommand(LifxKitchen2_Brightness, lateNightLevel2)
+end
+
+rule "Dim lights late at night part 3"
+when
+    Time cron "0 00 23 1/1 * ? *"
+then
+    logInfo("Kitchen", "Dim lights late at night triggered!")
+    logInfo("Kitchen", "Setting lights to {}%", lateNightLevel3)
+
+    sendCommand(LifxKitchen1_Brightness, lateNightLevel3)
+    sendCommand(LifxKitchen2_Brightness, lateNightLevel3)
+end
+
+rule "Dim lights late at night part 4"
+when
+    Time cron "0 30 23 1/1 * ? *"
+then
+    logInfo("Kitchen", "Dim lights late at night triggered!")
+    logInfo("Kitchen", "Setting lights to {}%", lateNightLevel4)
+
+    sendCommand(LifxKitchen1_Brightness, lateNightLevel4)
+    sendCommand(LifxKitchen2_Brightness, lateNightLevel4)
+end

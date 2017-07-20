@@ -8,12 +8,12 @@ Thing lifx:colorlight:ChrisLight "Chris Light" @ "Master Bedroom" [ deviceId="D0
         Type color : color [ powerOnBrightness=0 ]
 }
 
-Thing lifx:colorlight:DanielLight "Kitchen 1" @ "Kitchen" [ deviceId="D073D523440A", fadetime=1500 ] {
+Thing lifx:colorlight:Kitchen1 "Kitchen 1" @ "Kitchen" [ deviceId="D073D523440A", fadetime=1500 ] {
     Channels:
         Type color : color [ powerOnBrightness=0 ]
 }
 
-Thing lifx:colorlight:ChrisLight "Kitchen 2" @ "Kitchen" [ deviceId="D073D522D060", fadetime=1500 ] {
+Thing lifx:colorlight:Kitchen2 "Kitchen 2" @ "Kitchen" [ deviceId="D073D522D060", fadetime=1500 ] {
     Channels:
         Type color : color [ powerOnBrightness=0 ]
 }

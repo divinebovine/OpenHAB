@@ -6,6 +6,7 @@ var PercentType astroDuskLevel = new PercentType (30)
 var PercentType pauseLevel = new PercentType(30)
 var PercentType playLevel = new PercentType(5)
 var PercentType stopLevel = new PercentType(15)
+var PercentType offLevel = new PercentType(0)
 
 rule "Civl Dusk Triggered"
 when 
@@ -96,15 +97,17 @@ when
     Item KodiMb_Control changed to PLAY       
 then
     logInfo("MasterBedroom", "Kodi state changed to play")
+
     var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
     var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
-    if (now.isBefore(sunrise) || now.isAfter(sunset)) {
+    var cutoff = new DateTime(now.withTimeAtStartOfDay.plusHours(22).plusMinutes(30))
+    if ((now.isBefore(sunrise) || now.isAfter(sunset)) && now.isBefore(cutoff)) {
         logInfo("MasterBedroom", "Setting light level to {}% because it's dark outside", playLevel)
  
         sendCommand(LifxChrisLight_Brightness, playLevel)
         sendCommand(LifxDanielLight_Brightness, playLevel)
     } else {
-        logInfo("MasterBedroom", "Skipping setting light level because it's bright outside")
+        logInfo("MasterBedroom", "Skipping setting light level because it is outside the times specified.")
     }
 end
 
@@ -116,12 +119,13 @@ then
 
     var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
     var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
-    if (now.isBefore(sunrise) || now.isAfter(sunset)) {
+    var cutoff = new DateTime(now.withTimeAtStartOfDay.plusHours(22).plusMinutes(30))
+    if ((now.isBefore(sunrise) || now.isAfter(sunset)) && now.isBefore(cutoff)) {
         logInfo("MasterBedroom", "Setting light level to {}% because it's dark outside", pauseLevel)
         sendCommand(LifxChrisLight_Brightness, pauseLevel)
         sendCommand(LifxDanielLight_Brightness, pauseLevel)
     } else {
-        logInfo("MasterBedroom", "Skipping setting light level because it's bright outside")
+        logInfo("MasterBedroom", "Skipping setting light level because it is outside the times specified.")
     }
 end
 
@@ -133,7 +137,8 @@ then
     
     var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
     var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
-    if (now.isBefore(sunrise) || now.isAfter(sunset)) {
+    var cutoff = new DateTime(now.withTimeAtStartOfDay.plusHours(22).plusMinutes(30))
+    if ((now.isBefore(sunrise) || now.isAfter(sunset)) && now.isBefore(cutoff)) {
         if (LifxChrisLight_Brightness.state < stopLevel || LifxDanielLight_Brightness.state < stopLevel) {
             logInfo("MasterBedroom", "Setting light level to {}% because it's dark outside", stopLevel)
             sendCommand(LifxChrisLight_Brightness, stopLevel)
@@ -142,6 +147,18 @@ then
             logInfo("MasterBedroom", "Skipping setting the light level because it's already brighter than {}%", stopLevel)
         }
     } else {
-        logInfo("MasterBedroom", "Skipping setting light level because it's bright outside")
+        logInfo("MasterBedroom", "Skipping setting light level because it is outside the times specified.")
     }
 end
+
+rule "Turn off lights late at night"
+when
+    Time cron "0 00 23 1/1 * ? *"
+then
+    logInfo("MasterBedroom", "Turn off lights late at night triggered!")
+    
+    logInfo("MasterBedroom", "Setting lights to {}%", offLevel)
+    sendCommand(LifxKitchen1_Brightness, offLevel)
+    sendCommand(LifxKitchen2_Brightness, offLevel)
+end
+
