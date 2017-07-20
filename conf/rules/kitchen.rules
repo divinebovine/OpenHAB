@@ -1,0 +1,38 @@
+import org.openhab.core.library.types.*
+
+var PercentType civilDuskLevel = new PercentType(25)
+var PercentType nauticalDuskLevel = new PercentType(50)
+var PercentType astroDuskLevel = new PercentType (100)
+
+rule "Civl Dusk Triggered"
+when 
+    Channel 'astro:sun:local:civilDusk#event' triggered START
+then
+    logInfo("Kitchen", "Civil dusk rule triggered!")
+
+    logInfo("Kitchen", "Setting lights to {}%", civilDuskLevel)
+    sendCommand(LifxKitchen1_Brightness, civilDuskLevel)
+    sendCommand(LifxKitchen2_Brightness, civilDuskLevel)
+end
+
+rule "Nautical Dusk Triggered"
+when 
+    Channel 'astro:sun:local:nauticalDusk#event' triggered START
+then
+    logInfo("Kitchen", "Nautical dusk rule triggered!")
+
+    logInfo("Kitchen", "Setting lights to {}%", nauticalDuskLevel)
+    sendCommand(LifxKitchen1_Brightness, nauticalDuskLevel)
+    sendCommand(LifxKitchen2_Brightness, nauticalDuskLevel)
+end
+
+rule "Astro Dusk Triggered"
+when 
+    Channel 'astro:sun:local:astroDusk#event' triggered START
+then
+    logInfo("Kitchen", "Astro dusk rule triggered!")
+    logInfo("Kitchen", "Setting lights to {}%", astroDuskLevel)
+    sendCommand(LifxKitchen1_Brightness, astroDuskLevel)
+    sendCommand(LifxKitchen2_Brightness, astroDuskLevel)
+end
+

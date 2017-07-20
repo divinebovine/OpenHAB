@@ -3,3 +3,9 @@ Color LifxChrisLight_Color { channel="lifx:colorlight:ChrisLight:color" }
 
 Dimmer LifxDanielLight_Brightness { channel="lifx:colorlight:DanielLight:color" }
 Color LifxDanielLight_Color { channel="lifx:colorlight:DanielLight:color" }
+
+Dimmer LifxKitchen1_Brightness { channel="lifx:colorlight:Kitchen1:color" }
+Color LifxKitchen1_Color { channel="lifx:colorlight:Kitchen1:color" }
+
+Dimmer LifxKitchen2_Brightness { channel="lifx:colorlight:Kitchen2:color" }
+Color LifxKitchen2_Color { channel="lifx:colorlight:Kitchen2:color" }
