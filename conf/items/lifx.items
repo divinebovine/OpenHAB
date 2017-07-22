@@ -1,11 +1,19 @@
-Dimmer LifxChrisLight_Brightness { channel="lifx:colorlight:ChrisLight:color" }
+Group:Dimmer LifxMasterBedroomDimmer
+Switch AutoMasterBedroomLightSwitch "Automatically adjust the Master Bedroom Lights?"
+
+Dimmer LifxChrisLight_Brightness (LifxMasterBedroomDimmer) { channel="lifx:colorlight:ChrisLight:color" }
 Color LifxChrisLight_Color { channel="lifx:colorlight:ChrisLight:color" }
 
-Dimmer LifxDanielLight_Brightness { channel="lifx:colorlight:DanielLight:color" }
+Dimmer LifxDanielLight_Brightness (LifxMasterBedroomDimmer) { channel="lifx:colorlight:DanielLight:color" }
 Color LifxDanielLight_Color { channel="lifx:colorlight:DanielLight:color" }
 
-Dimmer LifxKitchen1_Brightness { channel="lifx:colorlight:Kitchen1:color" }
+
+Group:Dimmer LifxKitchenDimmer
+Switch AutoKitchenLightSwitch "Automatically adjust the kitchen lights?"
+
+Dimmer LifxKitchen1_Brightness (LifxKitchenDimmer) { channel="lifx:colorlight:Kitchen1:color" }
 Color LifxKitchen1_Color { channel="lifx:colorlight:Kitchen1:color" }
 
-Dimmer LifxKitchen2_Brightness { channel="lifx:colorlight:Kitchen2:color" }
+Dimmer LifxKitchen2_Brightness (LifxKitchenDimmer) { channel="lifx:colorlight:Kitchen2:color" }
 Color LifxKitchen2_Color { channel="lifx:colorlight:Kitchen2:color" }
+

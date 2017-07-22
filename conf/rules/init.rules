@@ -1,0 +1,7 @@
+rule "Init"
+when
+    System started
+then
+    AutoKitchenLightSwitch.state = ON
+    AutoMasterBedroomLightSwitch.state = ON
+end

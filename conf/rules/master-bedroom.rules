@@ -161,4 +161,3 @@ then
     sendCommand(LifxKitchen1_Brightness, offLevel)
     sendCommand(LifxKitchen2_Brightness, offLevel)
 end
-

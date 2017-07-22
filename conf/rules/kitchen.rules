@@ -3,6 +3,8 @@ import org.openhab.core.library.types.*
 var PercentType civilDuskLevel = new PercentType(25)
 var PercentType nauticalDuskLevel = new PercentType(50)
 var PercentType astroDuskLevel = new PercentType (100)
+var PercentType on = new PercentType(100)
+var PercentType off = new PercentType(0)
 
 rule "Civl Dusk Triggered"
 when 
@@ -10,9 +12,7 @@ when
 then
     logInfo("Kitchen", "Civil dusk rule triggered!")
     logInfo("Kitchen", "Setting lights to {}%", civilDuskLevel)
-    
-    sendCommand(LifxKitchen1_Brightness, civilDuskLevel)
-    sendCommand(LifxKitchen2_Brightness, civilDuskLevel)
+    sendCommand(LifxKitchenDimmer, civilDuskLevel)   
 end
 
 rule "Nautical Dusk Triggered"
@@ -21,9 +21,7 @@ when
 then
     logInfo("Kitchen", "Nautical dusk rule triggered!")
     logInfo("Kitchen", "Setting lights to {}%", nauticalDuskLevel)
-    
-    sendCommand(LifxKitchen1_Brightness, nauticalDuskLevel)
-    sendCommand(LifxKitchen2_Brightness, nauticalDuskLevel)
+    sendCommand(LifxKitchenDimmer, nauticalDuskLevel)   
 end
 
 rule "Astro Dusk Triggered"
@@ -32,34 +30,41 @@ when
 then
     logInfo("Kitchen", "Astro dusk rule triggered!")
     logInfo("Kitchen", "Setting lights to {}%", astroDuskLevel)
-    
-    sendCommand(LifxKitchen1_Brightness, astroDuskLevel)
-    sendCommand(LifxKitchen2_Brightness, astroDuskLevel)
+
+    sendCommand(LifxKitchenDimmer, astroDuskLevel)      
 end
 
 rule "Dimming lights at night"
 when
-    Time cron "0 09-59 22 1/1 * ? *"
+    Time cron "0 30-55 23 1/1 * ? *"
 then
     logInfo("Kitchen", "Dimming lights late at night triggered!")
 
-    var int currentLevel1 = (LifxKitchen1_Brightness.state as DecimalType).intValue
-    var int currentLevel2 = (LifxKitchen2_Brightness.state as DecimalType).intValue
-    var off = new PercentType(0)
-
-    if (currentLevel1 > 0) {
-        var newLevel = if (currentLevel1 > 2) new PercentType(currentLevel1 - 2) else off
-        logInfo("Kitchen", "Setting KitchenLight1 to {}%", newLevel) 
-        sendCommand(LifxKitchen1_Brightness, newLevel)
-    } else {
-        logInfo("Kitchen", "Skip dimming KitchenLight1 since it is already off")
+    if (AutoKitchenLightSwitch.state == OFF) {
+        logInfo("Kitchen", "Skip dimming the lights, KitchenDimmingSwitch is off")
+        return false
     }
+   
+    var int currentLevel =  (LifxKitchenDimmer.state as DecimalType).intValue
 
-    if (currentLevel2 > 0) {
-        var newLevel = if (currentLevel2 > 2) new PercentType (currentLevel2 - 2) else off
-        logInfo("Kitchen", "Setting KitchenLight2 to {}%", newLevel) 
-        sendCommand(LifxKitchen2_Brightness, newLevel)
+    if (currentLevel > 0) {
+        var newLevel = if (currentLevel > 4) new PercentType(currentLevel - 4) else off
+        logInfo("Kitchen", "Setting Kitchen Lights to {}%", newLevel) 
+        sendCommand(LifxKitchenDimmer, newLevel)
     } else {
-        logInfo("Kitchen", "Skip dimming KitchenLight2 since it is already off")
+        logInfo("Kitchen", "Skip dimming Kitchen Lights since they are already off")
+    }
+end
+
+rule "Kitchen Switch changed to on"
+when
+    Item LifxKitchenSwitch changed
+then
+    if (LifxKitchenSwitch.state == ON) {
+        logInfo("Kitchen", "Setting Kitchens Lights to {}%", on)
+        sendCommand(LifxKitchenDimmer, on)
+    } else if (LifxKitchenSwitch.state == OFF) {
+        logInfo("Kitchen", "Setting Kitchens Lights to {}%", off)
+        sendCommand(LifxKitchenDimmer, off)
     }
 end
