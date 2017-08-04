@@ -11,8 +11,18 @@ when
     Channel 'astro:sun:local:civilDusk#event' triggered START
 then
     logInfo("Kitchen", "Civil dusk rule triggered!")
-    logInfo("Kitchen", "Setting lights to {}%", civilDuskLevel)
-    sendCommand(LifxKitchenDimmer, civilDuskLevel)   
+    
+    if (AutoKitchenLightSwitch.state == OFF) {
+        logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
+        return false
+    }
+
+    if (LifxKitchenDimmer.state < civilDuskLevel) {
+        logInfo("Kitchen", "Setting lights to {}%", civilDuskLevel)
+        sendCommand(LifxKitchenDimmer, civilDuskLevel)
+    } else {
+        logInfo("Kitchen", "Skip adjusting the lights, the light level is higher than the civilDuskLevel")
+    }
 end
 
 rule "Nautical Dusk Triggered"
@@ -20,8 +30,18 @@ when
     Channel 'astro:sun:local:nauticalDusk#event' triggered START
 then
     logInfo("Kitchen", "Nautical dusk rule triggered!")
-    logInfo("Kitchen", "Setting lights to {}%", nauticalDuskLevel)
-    sendCommand(LifxKitchenDimmer, nauticalDuskLevel)   
+
+    if (AutoKitchenLightSwitch.state == OFF) {
+        logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
+        return false
+    }
+    
+    if (LifxKitchenDimmer.state < nauticalDuskLevel) {
+        logInfo("Kitchen", "Setting lights to {}%", nauticalDuskLevel)
+        sendCommand(LifxKitchenDimmer, nauticalDuskLevel)
+    } else {
+        logInfo("Kitchen", "Skip adjusting the lights, the light level is higher than the nauticalDuskLevel")
+    }
 end
 
 rule "Astro Dusk Triggered"
@@ -29,9 +49,18 @@ when
     Channel 'astro:sun:local:astroDusk#event' triggered START
 then
     logInfo("Kitchen", "Astro dusk rule triggered!")
-    logInfo("Kitchen", "Setting lights to {}%", astroDuskLevel)
 
-    sendCommand(LifxKitchenDimmer, astroDuskLevel)      
+    if (AutoKitchenLightSwitch.state == OFF) {
+        logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
+        return false
+    }
+
+    if (LifxKitchenDimmer.state < astroDuskLevel) {
+        logInfo("Kitchen", "Setting lights to {}%", astroDuskLevel)
+        sendCommand(LifxKitchenDimmer, astroDuskLevel)
+    } else {
+        logInfo("Kitchen", "Skip adjusting the lights, the light level is higher than the astroDuskLevel")
+    }
 end
 
 rule "Dimming lights at night"
@@ -41,7 +70,7 @@ then
     logInfo("Kitchen", "Dimming lights late at night triggered!")
 
     if (AutoKitchenLightSwitch.state == OFF) {
-        logInfo("Kitchen", "Skip dimming the lights, KitchenDimmingSwitch is off")
+        logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
         return false
     }
    
@@ -56,6 +85,7 @@ then
     }
 end
 
+/*
 rule "Kitchen Switch changed to on"
 when
     Item LifxKitchenSwitch changed
@@ -68,3 +98,4 @@ then
         sendCommand(LifxKitchenDimmer, off)
     }
 end
+*/

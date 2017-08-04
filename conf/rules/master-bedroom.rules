@@ -14,6 +14,11 @@ when
 then
     logInfo("MasterBedroom", "Civil dusk rule triggered!")
 
+    if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
+
     var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
     if (kodiStatus == "ONLINE") {
         if (KodiMb_Control.state == PLAY) {
@@ -41,6 +46,11 @@ when
     Channel 'astro:sun:local:nauticalDusk#event' triggered START
 then
     logInfo("MasterBedroom", "Nautical dusk rule triggered!")
+
+    if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
 
     var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
     if (kodiStatus == "ONLINE") {
@@ -70,6 +80,12 @@ when
 then
     logInfo("MasterBedroom", "Astro dusk rule triggered!")
 
+    if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
+
+
     var kodiStatus = ThingAction.getThingStatusInfo("kodi:kodi:MasterBedroom").getStatus()
     if (kodiStatus == "ONLINE") {
         if (KodiMb_Control.state == PLAY) {
@@ -98,6 +114,11 @@ when
 then
     logInfo("MasterBedroom", "Kodi state changed to play")
 
+    if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
+
     var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
     var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
     var cutoff = new DateTime(now.withTimeAtStartOfDay.plusHours(22).plusMinutes(30))
@@ -117,6 +138,12 @@ when
 then
     logInfo("MasterBedroom", "Kodi state changed to pause")
 
+    if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
+
+
     var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
     var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
     var cutoff = new DateTime(now.withTimeAtStartOfDay.plusHours(22).plusMinutes(30))
@@ -134,7 +161,12 @@ when
     Item KodiMb_Stop changed to ON
 then
     logInfo("MasterBedroom", "Kodi state changed to stop")
-    
+
+     if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
+   
     var sunrise = new DateTime((sunriseStart.state as DateTimeType).calendar.timeInMillis)
     var sunset = new DateTime((sunsetEnd.state as DateTimeType).calendar.timeInMillis)
     var cutoff = new DateTime(now.withTimeAtStartOfDay.plusHours(22).plusMinutes(30))
@@ -156,7 +188,12 @@ when
     Time cron "0 00 23 1/1 * ? *"
 then
     logInfo("MasterBedroom", "Turn off lights late at night triggered!")
-    
+
+    if (AutoMasterBedroomLightSwitch.state == OFF) {
+        logInfo("MasterBedroom", "Skip adjusting the lights, AutoMasterBedroomLightSwitch is off")
+        return false
+    }
+
     logInfo("MasterBedroom", "Setting lights to {}%", offLevel)
     sendCommand(LifxKitchen1_Brightness, offLevel)
     sendCommand(LifxKitchen2_Brightness, offLevel)
