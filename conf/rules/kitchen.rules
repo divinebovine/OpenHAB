@@ -1,7 +1,7 @@
 import org.openhab.core.library.types.*
 
-var PercentType civilDuskLevel = new PercentType(25)
-var PercentType nauticalDuskLevel = new PercentType(50)
+var PercentType civilDuskLevel = new PercentType(50)
+var PercentType nauticalDuskLevel = new PercentType(75)
 var PercentType astroDuskLevel = new PercentType (100)
 var PercentType on = new PercentType(100)
 var PercentType off = new PercentType(0)
@@ -14,7 +14,7 @@ then
     
     if (AutoKitchenLightSwitch.state == OFF) {
         logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
-        return false
+        return
     }
 
     if (LifxKitchenDimmer.state < civilDuskLevel) {
@@ -33,7 +33,7 @@ then
 
     if (AutoKitchenLightSwitch.state == OFF) {
         logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
-        return false
+        return
     }
     
     if (LifxKitchenDimmer.state < nauticalDuskLevel) {
@@ -52,7 +52,7 @@ then
 
     if (AutoKitchenLightSwitch.state == OFF) {
         logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
-        return false
+        return
     }
 
     if (LifxKitchenDimmer.state < astroDuskLevel) {
@@ -71,7 +71,7 @@ then
 
     if (AutoKitchenLightSwitch.state == OFF) {
         logInfo("Kitchen", "Skip adjusting the lights, AutoKitchenLightSwitch is off")
-        return false
+        return
     }
    
     var int currentLevel =  (LifxKitchenDimmer.state as DecimalType).intValue
@@ -84,18 +84,3 @@ then
         logInfo("Kitchen", "Skip dimming Kitchen Lights since they are already off")
     }
 end
-
-/*
-rule "Kitchen Switch changed to on"
-when
-    Item LifxKitchenSwitch changed
-then
-    if (LifxKitchenSwitch.state == ON) {
-        logInfo("Kitchen", "Setting Kitchens Lights to {}%", on)
-        sendCommand(LifxKitchenDimmer, on)
-    } else if (LifxKitchenSwitch.state == OFF) {
-        logInfo("Kitchen", "Setting Kitchens Lights to {}%", off)
-        sendCommand(LifxKitchenDimmer, off)
-    }
-end
-*/
